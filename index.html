@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdSense Compatibility Checker - Make Your Website AdSense Ready</title>
+    <meta name="description" content="Analyze your website for Google AdSense compatibility. Get instant recommendations to fix compliance issues and maximize your approval chances.">
+    <meta property="og:title" content="AdSense Compatibility Checker">
+    <meta property="og:description" content="Free tool to analyze websites for Google AdSense compliance and get actionable recommendations">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://sakmpar.co.in">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1976D2',
+                        success: '#4CAF50',
+                        warning: '#FF9800',
+                        error: '#F44336',
+                        surface: '#FFFFFF'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .loading-dots {
+            animation: loading 1.4s infinite both;
+        }
+        .loading-dots:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .loading-dots:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes loading {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-gray-900">AdSense Compatibility Checker</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">Reports</a>
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">Guidelines</a>
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">Support</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Analysis Form -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-2">Analyze Your Website</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Enter your website URL to get a comprehensive AdSense compatibility analysis with actionable recommendations.
+                    </p>
+                </div>
+                
+                <form id="analysisForm" class="max-w-2xl mx-auto">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <input
+                                    type="url"
+                                    id="urlInput"
+                                    placeholder="https://example.com"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
+                                    required
+                                />
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="analyzeBtn"
+                            class="px-8 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        >
+                            <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            Analyze
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-center mt-4 space-x-6 text-sm text-gray-500">
+                        <div class="flex items-center">
+                            <svg class="h-4 w-4 text-success mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Secure Analysis</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="h-4 w-4 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>~30 seconds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="h-4 w-4 text-warning mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Detailed Report</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden space-y-6">
+            <!-- Progress Indicator -->
+            <div id="progressCard" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Analysis Progress</h3>
+                    <span id="progressPercent" class="text-sm text-gray-500">0%</span>
+                </div>
+                
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                    <div id="progressBar" class="bg-primary h-2 rounded-full progress-bar" style="width: 0%"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                    <div class="flex items-center" id="step1">
+                        <div class="loading-dots w-1 h-1 bg-primary rounded-full mr-2"></div>
+                        <div class="loading-dots w-1 h-1 bg-primary rounded-full mr-2"></div>
+                        <div class="loading-dots w-1 h-1 bg-primary rounded-full mr-2"></div>
+                        <span class="text-primary">Content Scan</span>
+                    </div>
+                    <div class="flex items-center text-gray-400" id="step2">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>HTML Structure</span>
+                    </div>
+                    <div class="flex items-center text-gray-400" id="step3">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Policy Check</span>
+                    </div>
+                    <div class="flex items-center text-gray-400" id="step4">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Final Report</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compatibility Score -->
+            <div id="scoreCard" class="hidden bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Compatibility Score</h3>
+                    <span id="lastUpdated" class="text-sm text-gray-500">Just now</span>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="flex items-center justify-center">
+                        <div class="relative w-32 h-32">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-gray-200" stroke="currentColor" stroke-width="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                <path id="scoreCircle" class="text-success" stroke="currentColor" stroke-width="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div id="overallScore" class="text-2xl font-bold text-success">0</div>
+                                    <div class="text-xs text-gray-500">Score</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4" id="metricsContainer">
+                        <!-- Metrics will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Issues Breakdown -->
+            <div id="issuesBreakdown" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Issues cards will be populated by JavaScript -->
+            </div>
+
+            <!-- Detailed Report -->
+            <div id="detailedReport" class="hidden bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="border-b border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">Detailed Analysis Report</h3>
+                        <button onclick="downloadReport()" class="text-sm px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">
+                            <svg class="h-4 w-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Download Report
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6" id="reportContent">
+                    <!-- Report content will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Action Items -->
+            <div id="actionItems" class="hidden bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Recommended Action Plan</h3>
+                <div id="recommendationsContainer">
+                    <!-- Recommendations will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">AdSense Compatibility Checker</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Automated website analysis tool to ensure your site meets Google AdSense requirements and maximize your approval chances.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-primary transition-colors">AdSense Guidelines</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Content Policies</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Technical Requirements</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-primary transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">API Access</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Status Page</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-500">
+                <p>&copy; 2024 AdSense Compatibility Checker. All rights reserved. Not affiliated with Google Inc.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentAnalysisId = null;
+        let progressInterval = null;
+
+        document.getElementById('analysisForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const url = document.getElementById('urlInput').value;
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            
+            if (!url) return;
+
+            try {
+                new URL(url);
+            } catch {
+                alert('Please enter a valid URL (e.g., https://example.com)');
+                return;
+            }
+
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = `
+                <div class="loading-dots w-1 h-1 bg-white rounded-full mr-2"></div>
+                <div class="loading-dots w-1 h-1 bg-white rounded-full mr-2"></div>
+                <div class="loading-dots w-1 h-1 bg-white rounded-full mr-2"></div>
+                Analyzing...
+            `;
+
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('progressCard').classList.remove('hidden');
+            hideCompletedSections();
+
+            try {
+                const response = await fetch('/api/analyses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Analysis failed');
+                }
+
+                const analysis = await response.json();
+                currentAnalysisId = analysis.id;
+                
+                startProgressAnimation();
+                pollAnalysisStatus();
+
+            } catch (error) {
+                alert('Failed to start analysis. Please try again.');
+                resetForm();
+            }
+        });
+
+        function startProgressAnimation() {
+            let progress = 0;
+            progressInterval = setInterval(() => {
+                if (progress < 90) {
+                    progress += Math.random() * 10;
+                    updateProgress(Math.min(progress, 90));
+                }
+            }, 1000);
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progressPercent').textContent = Math.round(percent) + '%';
+            document.getElementById('progressBar').style.width = percent + '%';
+            
+            // Update step indicators
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            steps.forEach((stepId, index) => {
+                const stepElement = document.getElementById(stepId);
+                const threshold = (index + 1) * 25;
+                
+                if (percent >= threshold) {
+                    stepElement.innerHTML = `
+                        <svg class="h-4 w-4 text-success mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span class="text-success">${stepElement.textContent.trim()}</span>
+                    `;
+                } else if (percent >= threshold - 10) {
+                    stepElement.innerHTML = `
+                        <div class="loading-dots w-1 h-1 bg-primary rounded-full mr-2"></div>
+                        <div class="loading-dots w-1 h-1 bg-primary rounded-full mr-2"></div>
+                        <div class="loading-dots w-1 h-1 bg-primary rounded-full mr-2"></div>
+                        <span class="text-primary">${stepElement.textContent.trim()}</span>
+                    `;
+                }
+            });
+        }
+
+        async function pollAnalysisStatus() {
+            if (!currentAnalysisId) return;
+
+            try {
+                const response = await fetch(`/api/analyses/${currentAnalysisId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch analysis');
+                }
+
+                const analysis = await response.json();
+                
+                if (analysis.status === 'completed') {
+                    clearInterval(progressInterval);
+                    updateProgress(100);
+                    
+                    setTimeout(() => {
+                        hideProgressCard();
+                        showResults(analysis);
+                        resetForm();
+                    }, 1000);
+                } else if (analysis.status === 'failed') {
+                    clearInterval(progressInterval);
+                    alert('Analysis failed. Please try again.');
+                    resetForm();
+                } else {
+                    // Continue polling
+                    setTimeout(pollAnalysisStatus, 2000);
+                }
+            } catch (error) {
+                clearInterval(progressInterval);
+                alert('Error checking analysis status. Please try again.');
+                resetForm();
+            }
+        }
+
+        function showResults(analysis) {
+            showCompatibilityScore(analysis);
+            showIssuesBreakdown(analysis);
+            showDetailedReport(analysis);
+            showActionItems(analysis);
+        }
+
+        function showCompatibilityScore(analysis) {
+            const scoreCard = document.getElementById('scoreCard');
+            const score = analysis.compatibilityScore || 0;
+            
+            // Update circular progress
+            const circumference = 2 * Math.PI * 15.9155;
+            const strokeDasharray = `${(score / 100) * circumference}, ${circumference}`;
+            document.getElementById('scoreCircle').style.strokeDasharray = strokeDasharray;
+            
+            // Update score color
+            const scoreElement = document.getElementById('overallScore');
+            scoreElement.textContent = score;
+            
+            if (score >= 80) {
+                scoreElement.className = 'text-2xl font-bold text-success';
+                document.getElementById('scoreCircle').className = 'text-success';
+            } else if (score >= 60) {
+                scoreElement.className = 'text-2xl font-bold text-warning';
+                document.getElementById('scoreCircle').className = 'text-warning';
+            } else {
+                scoreElement.className = 'text-2xl font-bold text-error';
+                document.getElementById('scoreCircle').className = 'text-error';
+            }
+            
+            // Update metrics
+            const metrics = [
+                { name: 'Content Quality', value: analysis.contentQuality || 0 },
+                { name: 'Technical Structure', value: analysis.technicalStructure || 0 },
+                { name: 'Policy Compliance', value: analysis.policyCompliance || 0 },
+                { name: 'Mobile Responsiveness', value: analysis.mobileResponsiveness || 0 }
+            ];
+            
+            const metricsContainer = document.getElementById('metricsContainer');
+            metricsContainer.innerHTML = metrics.map(metric => {
+                const color = metric.value >= 80 ? 'success' : metric.value >= 60 ? 'warning' : 'error';
+                return `
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-700">${metric.name}</span>
+                        <div class="flex items-center">
+                            <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                <div class="h-2 rounded-full bg-${color}" style="width: ${metric.value}%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-${color}">${metric.value}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            scoreCard.classList.remove('hidden');
+        }
+
+        function showIssuesBreakdown(analysis) {
+            const issuesBreakdown = document.getElementById('issuesBreakdown');
+            
+            const stats = [
+                {
+                    title: 'Critical Issues',
+                    subtitle: 'Must fix for approval',
+                    count: analysis.criticalIssues || 0,
+                    description: 'Missing privacy policy, prohibited content detected',
+                    color: 'error'
+                },
+                {
+                    title: 'Warnings',
+                    subtitle: 'Recommended fixes',
+                    count: analysis.warningIssues || 0,
+                    description: 'Navigation improvements, content optimization',
+                    color: 'warning'
+                },
+                {
+                    title: 'Passed Checks',
+                    subtitle: 'Requirements met',
+                    count: analysis.passedChecks || 0,
+                    description: 'Mobile friendly, fast loading, quality content',
+                    color: 'success'
+                }
+            ];
+            
+            issuesBreakdown.innerHTML = stats.map(stat => `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-${stat.color} bg-opacity-10 rounded-lg flex items-center justify-center mr-3">
+                            ${getIconForStat(stat.color)}
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">${stat.title}</h4>
+                            <p class="text-sm text-gray-500">${stat.subtitle}</p>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-bold text-${stat.color} mb-2">${stat.count}</div>
+                    <p class="text-sm text-gray-600">${stat.description}</p>
+                </div>
+            `).join('');
+            
+            issuesBreakdown.classList.remove('hidden');
+        }
+
+        function getIconForStat(color) {
+            switch(color) {
+                case 'error':
+                    return `<svg class="h-5 w-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>`;
+                case 'warning':
+                    return `<svg class="h-5 w-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>`;
+                default:
+                    return `<svg class="h-5 w-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>`;
+            }
+        }
+
+        function showDetailedReport(analysis) {
+            const detailedReport = document.getElementById('detailedReport');
+            const reportContent = document.getElementById('reportContent');
+            
+            const issues = analysis.issues || [];
+            
+            if (issues.length === 0) {
+                reportContent.innerHTML = `
+                    <div class="text-center py-8">
+                        <svg class="h-12 w-12 text-success mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Perfect Score!</h4>
+                        <p class="text-gray-600">Your website meets all AdSense requirements.</p>
+                    </div>
+                `;
+            } else {
+                const groupedIssues = issues.reduce((acc, issue) => {
+                    if (!acc[issue.category]) {
+                        acc[issue.category] = [];
+                    }
+                    acc[issue.category].push(issue);
+                    return acc;
+                }, {});
+                
+                reportContent.innerHTML = Object.entries(groupedIssues).map(([category, categoryIssues]) => `
+                    <div class="mb-8 last:mb-0">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">${category}</h4>
+                                <p class="text-sm text-gray-600">${categoryIssues.length} issues found</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4 ml-11">
+                            ${categoryIssues.map(issue => `
+                                <div class="border rounded-lg p-4 ${getSeverityStyles(issue.severity).bg} ${getSeverityStyles(issue.severity).border}">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            ${getSeverityIcon(issue.severity)}
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <h5 class="font-medium text-gray-900">${issue.title}</h5>
+                                            <p class="text-sm text-gray-600 mt-1">${issue.description}</p>
+                                            ${issue.details ? `<p class="text-sm text-gray-600 mt-1">${issue.details}</p>` : ''}
+                                            <div class="mt-3 flex items-center space-x-4 text-sm">
+                                                <span class="font-medium capitalize ${getSeverityStyles(issue.severity).text}">
+                                                    ${issue.severity}
+                                                </span>
+                                                ${issue.guidelines ? `
+                                                    <span class="text-gray-500">•</span>
+                                                    <a href="${issue.guidelines}" class="text-primary hover:underline" target="_blank">
+                                                        View Guidelines
+                                                    </a>
+                                                ` : ''}
+                                                ${issue.template ? `
+                                                    <span class="text-gray-500">•</span>
+                                                    <a href="${issue.template}" class="text-primary hover:underline" target="_blank">
+                                                        Generate Template
+                                                    </a>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            detailedReport.classList.remove('hidden');
+        }
+
+        function getSeverityStyles(severity) {
+            switch(severity) {
+                case 'critical':
+                    return {
+                        bg: 'bg-red-50',
+                        border: 'border-red-200',
+                        text: 'text-error'
+                    };
+                case 'warning':
+                    return {
+                        bg: 'bg-yellow-50',
+                        border: 'border-yellow-200',
+                        text: 'text-warning'
+                    };
+                default:
+                    return {
+                        bg: 'bg-green-50',
+                        border: 'border-green-200',
+                        text: 'text-success'
+                    };
+            }
+        }
+
+        function getSeverityIcon(severity) {
+            switch(severity) {
+                case 'critical':
+                    return `<svg class="h-5 w-5 text-error mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>`;
+                case 'warning':
+                    return `<svg class="h-5 w-5 text-warning mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>`;
+                default:
+                    return `<svg class="h-5 w-5 text-success mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>`;
+            }
+        }
+
+        function showActionItems(analysis) {
+            const actionItems = document.getElementById('actionItems');
+            const recommendationsContainer = document.getElementById('recommendationsContainer');
+            
+            const recommendations = analysis.recommendations || [];
+            
+            if (recommendations.length === 0) {
+                recommendationsContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-gray-600">No specific actions required. Your website is ready for AdSense!</p>
+                    </div>
+                `;
+            } else {
+                recommendationsContainer.innerHTML = recommendations
+                    .sort((a, b) => a.priority - b.priority)
+                    .map(recommendation => {
+                        const colors = getPriorityColors(recommendation.priority);
+                        return `
+                            <div class="flex items-start mb-4">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mr-4 mt-1 ${colors.bg}">
+                                    <span class="font-semibold text-sm ${colors.text}">
+                                        ${recommendation.priority}
+                                    </span>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-900">${recommendation.title}</h4>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        ${recommendation.description} Estimated time: ${recommendation.estimatedTime}
+                                    </p>
+                                    ${recommendation.instructionsLink ? `
+                                        <a href="${recommendation.instructionsLink}" class="mt-2 inline-flex items-center text-sm font-medium text-primary hover:underline">
+                                            Get detailed instructions
+                                            <svg class="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </a>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+            }
+            
+            actionItems.classList.remove('hidden');
+        }
+
+        function getPriorityColors(priority) {
+            switch(priority) {
+                case 1:
+                    return {
+                        bg: 'bg-red-100',
+                        text: 'text-error'
+                    };
+                case 2:
+                    return {
+                        bg: 'bg-yellow-100',
+                        text: 'text-warning'
+                    };
+                default:
+                    return {
+                        bg: 'bg-blue-100',
+                        text: 'text-primary'
+                    };
+            }
+        }
+
+        function hideProgressCard() {
+            document.getElementById('progressCard').classList.add('hidden');
+        }
+
+        function hideCompletedSections() {
+            document.getElementById('scoreCard').classList.add('hidden');
+            document.getElementById('issuesBreakdown').classList.add('hidden');
+            document.getElementById('detailedReport').classList.add('hidden');
+            document.getElementById('actionItems').classList.add('hidden');
+        }
+
+        function resetForm() {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            analyzeBtn.disabled = false;
+            analyzeBtn.innerHTML = `
+                <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                Analyze
+            `;
+            
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+        }
+
+        function downloadReport() {
+            alert('Report download feature will be implemented soon!');
+        }
+    </script>
+</body>
+</html>
